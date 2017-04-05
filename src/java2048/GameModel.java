@@ -33,6 +33,13 @@ public class GameModel implements IGameModel {
 
 	@Override
 	public void moveUp() {
+		boolean hasChanged = true;
+		while (hasChanged) {
+			for (int x = gameField.length - 1; x > 0; x--) {
+				for (int y = 0; y < gameField[x].length; y++) {
+				}
+			}
+		}
 	}
 
 	@Override
