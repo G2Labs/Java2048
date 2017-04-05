@@ -1,7 +1,7 @@
 package java2048;
 
 public interface IGameView {
-	public void setGameField(int numbers[]);
+	public void setGameField(String[] numbers);
 
 	public void setScore(int score);
 

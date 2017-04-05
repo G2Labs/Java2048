@@ -14,26 +14,30 @@ import javax.swing.JTextField;
 @SuppressWarnings("serial")
 public class GameView extends JFrame implements IGameView, KeyListener {
 	private static final int DIMENSION = 50;
-	private static final int SIDE = 4;
+	private int SIDE = 4;
 
 	IGameControllerFeedback feedback = null;
 
+	JTextField[] gameField;
 	JPanel gamePanel = new JPanel();
-	JTextField[] gameField = new JTextField[SIDE * SIDE];
 	JPanel statusPanel = new JPanel();
 	JLabel scoreLabel = new JLabel("Score:");
 	JLabel scoreResultLabel = new JLabel("");
 	JLabel turnLabel = new JLabel("Turn:");
 	JLabel turnResultLabel = new JLabel("");
 
-	public GameView() {
+	public GameView(int side) {
+		SIDE = side;
+		gameField = new JTextField[SIDE * SIDE];
+
 		setLayout(new BorderLayout());
 		configureGamePanel();
 		configureStatusPanel();
 		setMinimumSize(new Dimension(SIDE * DIMENSION, (SIDE + 1) * DIMENSION));
 		setResizable(false);
-		setVisible(true);
 		addKeyListener(this);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
 	}
 
 	private void configureGamePanel() {
@@ -60,21 +64,9 @@ public class GameView extends JFrame implements IGameView, KeyListener {
 	}
 
 	@Override
-	public void setGameField(int[] numbers) {
+	public void setGameField(String[] numbers) {
 		for (int i = 0; (i < numbers.length) && (i < (SIDE * SIDE)); i++) {
-			String text = "";
-			int num = numbers[i];
-			if (num > 1) {
-				if (num > 512 * 1024) {
-					num /= (1024 * 1024);
-					text = num + "M";
-				} else if (num > 512) {
-					num /= 1024;
-					text = num + "k";
-				} else
-					text = num + "";
-			}
-			gameField[i].setText(text);
+			gameField[i].setText(numbers[i]);
 		}
 	}
 
