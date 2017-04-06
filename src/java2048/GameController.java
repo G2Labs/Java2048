@@ -47,7 +47,7 @@ public class GameController implements IGameControllerFeedback {
 
 		for (int i = 0; i < l * l; i++) {
 			String text = "";
-			int num = gameField[i / l][i % l];
+			int num = gameField[i % l][i / l];
 			if (num > 1) {
 				if (num > 512 * 1024) {
 					num /= (1024 * 1024);
