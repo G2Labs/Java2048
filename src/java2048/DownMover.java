@@ -1,13 +1,6 @@
 package java2048;
 
-public class UpMovement extends GameMover {
-
-	public UpMovement() {
-	}
-
-	public UpMovement(int[][] field) {
-		move(field);
-	}
+public class DownMover extends GameMover {
 
 	@Override
 	public void move(int[][] field) {
@@ -19,13 +12,13 @@ public class UpMovement extends GameMover {
 
 		for (int x = 0; x < size; x++) {
 			GameShifter gs = new GameShifter();
-			for (int y = 0; y < size; y++)
+			for (int y = size - 1; y >= 0; y--)
 				gs.add(field[x][y]);
 
 			gs.move();
 
 			for (int y = 0; y < gs.size(); y++)
-				result[x][y] = gs.get(y);
+				result[x][size - 1 - y] = gs.get(y);
 
 			changed |= gs.hasChanged();
 			score += gs.getScore();

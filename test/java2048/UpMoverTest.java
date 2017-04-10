@@ -5,18 +5,18 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-public class UpMovementTest {
+public class UpMoverTest {
 
 	@Test
 	public void test() {
 		int[][] field = new int[0][0];
-		UpMovement um = new UpMovement(field);
+		UpMover um = new UpMover(field);
 		assertEquals(false, um.hasChanged());
 
 		int[][] res = um.getField();
 		assertEquals(0, res.length);
 		field = new int[1][1];
-		um = new UpMovement(field);
+		um = new UpMover(field);
 		assertEquals(false, um.hasChanged());
 
 		res = um.getField();
@@ -24,7 +24,7 @@ public class UpMovementTest {
 		assertEquals(1, res[0].length);
 
 		field = new int[2][2];
-		um = new UpMovement(field);
+		um = new UpMover(field);
 		res = um.getField();
 		assertEquals(2, res.length);
 		assertEquals(2, res[0].length);
@@ -33,13 +33,13 @@ public class UpMovementTest {
 	@Test
 	public void testSomeMoves() throws Exception {
 		int[][] f = { { 2, 0 }, { 2, 0 } };
-		UpMovement up = new UpMovement();
+		UpMover up = new UpMover();
 		up.move(f);
 		assertEquals(false, up.hasChanged());
 		assertEquals(0, up.getScore());
 
 		int[][] f2 = { { 0, 2 }, { 0, 2 } };
-		up = new UpMovement();
+		up = new UpMover();
 		up.move(f2);
 		assertEquals(true, up.hasChanged());
 		assertEquals(0, up.getScore());
@@ -50,7 +50,7 @@ public class UpMovementTest {
 	@Test
 	public void testMoreMoves() throws Exception {
 		int[][] f = { { 0, 2, 0 }, { 4, 0, 4 }, { 2, 2, 2 } };
-		UpMovement up = new UpMovement();
+		UpMover up = new UpMover();
 		up.move(f);
 		assertEquals(true, up.hasChanged());
 		assertEquals(12, up.getScore());
