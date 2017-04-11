@@ -12,13 +12,14 @@ public class LeftMoverTest {
 		LeftMover lf = new LeftMover();
 		assertEquals(false, lf.hasChanged());
 		assertEquals(0, lf.getScore());
+		assertEquals("LEFT", lf.getName());
 	}
 
 	@Test
 	public void testMoreMoves() throws Exception {
 		LeftMover lf = new LeftMover();
 		int[][] f = { { 0, 0, 2 }, { 2, 0, 2 }, { 2, 8, 4 } };
-		lf.move(f);
+		assertArrayEquals(new int[] { 4, 8, 4 }, lf.move(f)[0]);
 		assertEquals(true, lf.hasChanged());
 		assertEquals(8, lf.getScore());
 		assertArrayEquals(new int[] { 4, 8, 4 }, lf.getField()[0]);

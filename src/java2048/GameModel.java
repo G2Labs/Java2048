@@ -16,8 +16,22 @@ public class GameModel implements IGameModel {
 	}
 
 	@Override
+	public boolean canPlay() {
+		return canStillPlay;
+	}
+
+	@Override
 	public int[][] getGameField() {
+		if (history.isEmpty())
+			return new int[SIDE][SIDE];
 		return history.get(turn).getField();
+	}
+
+	@Override
+	public String getLastMove() {
+		if (history.isEmpty())
+			return "";
+		return history.get(turn).getName();
 	}
 
 	@Override
@@ -30,17 +44,39 @@ public class GameModel implements IGameModel {
 		return turn;
 	}
 
+	private boolean hasMembers() {
+		int[][] f = history.get(turn).getField();
+		boolean has = false;
+
+		for (int x = 0; x < f.length; x++)
+			for (int y = 0; y < f.length; y++) {
+				if (0 == f[x][y])
+					return true;
+				if ((x > 0) && (f[x][y] == f[x - 1][y]))
+					return true;
+				if ((x < f.length - 1) && (f[x][y] == f[x + 1][y]))
+					return true;
+				if ((y > 0) && (f[x][y] == f[x][y - 1]))
+					return true;
+				if ((y < f.length - 1) && (f[x][y] == f[x][y + 1]))
+					return true;
+			}
+
+		return has;
+	}
+
 	private void makeMove(GameMover gm) {
-		int[][] field = history.get(turn).getField();
-		gm.move(field);
-		field = gm.getField();
+		if (!hasMembers()) {
+			canStillPlay = false;
+			return;
+		}
+
+		gm.move(history.get(turn).getField());
 		score += gm.getScore();
 		if (gm.hasChanged()) {
-			field = gm.getField();
-			GameMover r = new RandomInputter();
-			r.move(field);
+			gm.generateNewNumber();
 
-			history.add(r);
+			history.add(gm);
 			turn++;
 		}
 	}
@@ -61,26 +97,26 @@ public class GameModel implements IGameModel {
 	}
 
 	@Override
+	public void moveUndo() {
+		if (history.size() < 2)
+			return;
+
+		score -= history.remove(turn--).getScore();
+	}
+
+	@Override
 	public void moveUp() {
 		makeMove(new UpMover());
 	}
 
 	@Override
 	public void restart() {
-		int[][] f = new int[SIDE][SIDE];
 		GameMover gm = new RandomInputter();
-		gm.move(f);
-		f = gm.getField();
-		gm.move(f);
+		gm.move(new int[SIDE][SIDE]);
 		history.clear();
 		history.add(gm);
-		setInitialConditions();
-	}
-
-	private void setInitialConditions() {
 		score = 0;
 		turn = 0;
 		canStillPlay = true;
 	}
-
 }

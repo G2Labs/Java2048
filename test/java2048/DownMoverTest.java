@@ -12,13 +12,14 @@ public class DownMoverTest {
 		DownMover dw = new DownMover();
 		assertEquals(false, dw.hasChanged());
 		assertEquals(0, dw.getScore());
+		assertEquals("DOWN", dw.getName());
 	}
 
 	@Test
 	public void testOtherMove() throws Exception {
 		DownMover dw = new DownMover();
 		int[][] f = { { 0, 2, 0, 0 }, { 2, 4, 4, 8 }, { 2, 0, 2, 2 }, { 2, 2, 8, 8 } };
-		dw.move(f);
+		assertArrayEquals(new int[] { 0, 0, 0, 2 }, dw.move(f)[0]);
 		assertEquals(true, dw.hasChanged());
 		assertEquals(32, dw.getScore());
 		assertArrayEquals(new int[] { 0, 0, 0, 2 }, dw.getField()[0]);

@@ -10,6 +10,7 @@ public class RightMoverTest {
 	@Test
 	public void test() {
 		RightMover rm = new RightMover();
+		assertEquals("RIGHT", rm.getName());
 		assertEquals(false, rm.hasChanged());
 		assertEquals(0, rm.getScore());
 	}
@@ -18,7 +19,7 @@ public class RightMoverTest {
 	public void testOtherMoves() throws Exception {
 		RightMover rm = new RightMover();
 		int[][] f = { { 0, 0, 2, 2 }, { 2, 0, 2, 4 }, { 2, 8, 4, 4 }, { 8, 8, 4, 2 } };
-		rm.move(f);
+		assertArrayEquals(new int[] { 0, 0, 0, 0 }, rm.move(f)[0]);
 		assertEquals(true, rm.hasChanged());
 		assertEquals(40, rm.getScore());
 		assertArrayEquals(new int[] { 0, 0, 0, 0 }, rm.getField()[0]);

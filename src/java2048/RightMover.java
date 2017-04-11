@@ -2,7 +2,12 @@ package java2048;
 
 public class RightMover extends GameMover {
 	@Override
-	public void move(int[][] field) {
+	public String getName() {
+		return "RIGHT";
+	}
+
+	@Override
+	public int[][] move(int[][] field) {
 		int size = field.length;
 
 		changed = false;
@@ -22,5 +27,6 @@ public class RightMover extends GameMover {
 			changed |= gs.hasChanged();
 			score += gs.getScore();
 		}
+		return result;
 	}
 }

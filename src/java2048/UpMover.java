@@ -10,7 +10,12 @@ public class UpMover extends GameMover {
 	}
 
 	@Override
-	public void move(int[][] field) {
+	public String getName() {
+		return "UP";
+	}
+
+	@Override
+	public int[][] move(int[][] field) {
 		int size = field.length;
 
 		changed = false;
@@ -30,5 +35,6 @@ public class UpMover extends GameMover {
 			changed |= gs.hasChanged();
 			score += gs.getScore();
 		}
+		return result;
 	}
 }

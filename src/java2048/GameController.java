@@ -7,12 +7,7 @@ public class GameController implements IGameControllerFeedback {
 	public GameController(IGameView view, IGameModel model) {
 		this.view = view;
 		this.model = model;
-		redisplay();
-	}
-
-	@Override
-	public void reactForUp() {
-		model.moveUp();
+		this.view.attatchInputListener(this);
 		redisplay();
 	}
 
@@ -29,14 +24,26 @@ public class GameController implements IGameControllerFeedback {
 	}
 
 	@Override
+	public void reactForReset() {
+		model.restart();
+		redisplay();
+	}
+
+	@Override
 	public void reactForRight() {
 		model.moveRight();
 		redisplay();
 	}
 
 	@Override
-	public void reactForReset() {
-		model.restart();
+	public void reactForUndo() {
+		model.moveUndo();
+		redisplay();
+	}
+
+	@Override
+	public void reactForUp() {
+		model.moveUp();
 		redisplay();
 	}
 
@@ -64,6 +71,7 @@ public class GameController implements IGameControllerFeedback {
 		view.setGameField(texts);
 		view.setScore(model.getScore());
 		view.setTurn(model.getTurn());
+		view.setStatus((model.canPlay()) ? model.getLastMove() : "GAME OVER");
 	}
 
 }
