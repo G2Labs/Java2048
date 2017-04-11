@@ -1,15 +1,18 @@
 package java2048;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
 public class GameView extends JFrame implements IGameView, KeyListener {
@@ -18,19 +21,19 @@ public class GameView extends JFrame implements IGameView, KeyListener {
 
 	IGameControllerFeedback feedback = null;
 
-	JTextField[] gameField;
+	JLabel[] gameField;
 	JPanel gamePanel = new JPanel();
 	JPanel statusPanel = new JPanel();
-	JLabel scoreLabel = new JLabel("Score:");
+	JLabel scoreLabel = new JLabel("Score:   ", SwingConstants.RIGHT);
 	JLabel scoreResultLabel = new JLabel("");
-	JLabel turnLabel = new JLabel("Turn:");
+	JLabel turnLabel = new JLabel("Turn:   ", SwingConstants.RIGHT);
 	JLabel turnResultLabel = new JLabel("");
-	JLabel statusLabel = new JLabel("Status:");
+	JLabel statusLabel = new JLabel("Status:   ", SwingConstants.RIGHT);
 	JLabel statusResultLabel = new JLabel("");
 
 	public GameView(int side) {
 		SIDE = side;
-		gameField = new JTextField[SIDE * SIDE];
+		gameField = new JLabel[SIDE * SIDE];
 
 		setLayout(new BorderLayout());
 		configureGamePanel();
@@ -51,10 +54,9 @@ public class GameView extends JFrame implements IGameView, KeyListener {
 		gamePanel.setPreferredSize(new Dimension(SIDE * DIMENSION, SIDE * DIMENSION));
 		gamePanel.setLayout(new GridLayout(SIDE, SIDE));
 		for (int i = 0; i < gameField.length; i++) {
-			gameField[i] = new JTextField();
-			gameField[i].setEnabled(false);
+			gameField[i] = new JLabel("");
 			gameField[i].setHorizontalAlignment(JTextField.CENTER);
-			gameField[i].setText("");
+			gameField[i].setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			gamePanel.add(gameField[i]);
 		}
 		add(gamePanel, BorderLayout.CENTER);
@@ -112,9 +114,27 @@ public class GameView extends JFrame implements IGameView, KeyListener {
 	}
 
 	@Override
-	public void setGameField(String[] numbers) {
-		for (int i = 0; (i < numbers.length) && (i < (SIDE * SIDE)); i++) {
-			gameField[i].setText(numbers[i]);
+	public void setGameField(int[][] numbers) {
+		int l = numbers.length;
+		String[] texts = new String[l * l];
+
+		for (int i = 0; i < l * l; i++) {
+			String text = "";
+			int num = numbers[i % l][i / l];
+			if (num > 1) {
+				if (num > 512 * 1024) {
+					num /= (1024 * 1024);
+					text = num + "M";
+				} else if (num > 512) {
+					num /= 1024;
+					text = num + "k";
+				} else
+					text = num + "";
+			}
+			texts[i] = text;
+		}
+		for (int i = 0; (i < texts.length) && (i < (SIDE * SIDE)); i++) {
+			gameField[i].setText(texts[i]);
 		}
 	}
 
