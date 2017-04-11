@@ -2,6 +2,7 @@ package java2048;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
@@ -59,5 +60,21 @@ public class UpMoverTest {
 		assertEquals(0, up.getScore());
 		assertArrayEquals(new int[] { 2, 0 }, up.getField()[0]);
 		assertArrayEquals(new int[] { 2, 0 }, up.getField()[1]);
+		up.generateNewNumber();
+
+		int[][] result = { { 2, 0 }, { 2, 0 } };
+		boolean areEqual = true;
+		for (int x = 0; x < up.getField().length; x++) {
+			for (int y = 0; y < up.getField().length; y++) {
+				if (up.getField()[x][y] != result[x][y])
+					areEqual = false;
+			}
+		}
+		if (areEqual)
+			fail("Dane nie powinny byc takie same");
+
+		up = new UpMover(new int[0][0]);
+		if (up.generateNewNumber().length > 0)
+			fail("Tablica powinna byæ pusta");
 	}
 }
