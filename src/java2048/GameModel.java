@@ -20,6 +20,27 @@ public class GameModel implements IGameModel {
 		return canStillPlay;
 	}
 
+	private boolean checkIfHasMembers() {
+		int[][] f = history.get(turn).getField();
+		boolean has = false;
+
+		for (int x = 0; x < f.length; x++)
+			for (int y = 0; y < f.length; y++) {
+				if (0 == f[x][y])
+					has |= true;
+				if ((x > 0) && (f[x][y] == f[x - 1][y]))
+					has |= true;
+				if ((x < f.length - 1) && (f[x][y] == f[x + 1][y]))
+					has |= true;
+				if ((y > 0) && (f[x][y] == f[x][y - 1]))
+					has |= true;
+				if ((y < f.length - 1) && (f[x][y] == f[x][y + 1]))
+					has |= true;
+			}
+		canStillPlay = has;
+		return has;
+	}
+
 	@Override
 	public int[][] getGameField() {
 		if (history.isEmpty())
@@ -31,6 +52,8 @@ public class GameModel implements IGameModel {
 	public String getLastMove() {
 		if (history.isEmpty())
 			return "";
+		if (!canStillPlay)
+			return "GAME OVER";
 		return history.get(turn).getName();
 	}
 
@@ -44,32 +67,9 @@ public class GameModel implements IGameModel {
 		return turn;
 	}
 
-	private boolean hasMembers() {
-		int[][] f = history.get(turn).getField();
-		boolean has = false;
-
-		for (int x = 0; x < f.length; x++)
-			for (int y = 0; y < f.length; y++) {
-				if (0 == f[x][y])
-					return true;
-				if ((x > 0) && (f[x][y] == f[x - 1][y]))
-					return true;
-				if ((x < f.length - 1) && (f[x][y] == f[x + 1][y]))
-					return true;
-				if ((y > 0) && (f[x][y] == f[x][y - 1]))
-					return true;
-				if ((y < f.length - 1) && (f[x][y] == f[x][y + 1]))
-					return true;
-			}
-
-		return has;
-	}
-
 	private void makeMove(GameMover gm) {
-		if (!hasMembers()) {
-			canStillPlay = false;
+		if (!checkIfHasMembers())
 			return;
-		}
 
 		gm.move(history.get(turn).getField());
 		score += gm.getScore();
@@ -102,6 +102,7 @@ public class GameModel implements IGameModel {
 			return;
 
 		score -= history.remove(turn--).getScore();
+		checkIfHasMembers();
 	}
 
 	@Override

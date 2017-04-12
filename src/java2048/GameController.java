@@ -51,7 +51,7 @@ public class GameController implements IGameControllerFeedback {
 		view.setGameField(model.getGameField());
 		view.setScore(model.getScore());
 		view.setTurn(model.getTurn());
-		view.setStatus((model.canPlay()) ? model.getLastMove() : "GAME OVER");
+		view.setStatus(model.getLastMove());
 	}
 
 }

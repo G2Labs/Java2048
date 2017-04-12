@@ -42,6 +42,7 @@ public class GameView extends JFrame implements IGameView, KeyListener {
 		setResizable(false);
 		addKeyListener(this);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 
