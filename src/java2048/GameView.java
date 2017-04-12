@@ -98,6 +98,7 @@ public class GameView extends JFrame implements IGameView, KeyListener {
 			break;
 		case KeyEvent.VK_R:
 			feedback.reactForReset();
+			break;
 		case KeyEvent.VK_U:
 			feedback.reactForUndo();
 			break;
